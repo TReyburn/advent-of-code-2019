@@ -87,7 +87,8 @@ def main():
     main_computer = IntComputer(retrieve_opcode())
     main_computer.update(1, 12)
     main_computer.update(2, 2)
-    main_computer.run()
+    run = main_computer.run()
+    print(run)
 
 
 if __name__ == '__main__':
