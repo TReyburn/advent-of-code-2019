@@ -28,7 +28,6 @@ class IntComputer(object):
             if not self._check_status():
                 for x in range(self._pop):
                     self._opcode.pop()
-                print(self)
                 return self._opcode
             self.run()
 
@@ -60,7 +59,6 @@ class IntComputer(object):
         elif self._command == 2:
             return self._multiply()
         else:
-            print(self)
             raise Exception(f'unrecognized command: {self._command}')
 
     def _check_status(self):
@@ -71,6 +69,6 @@ class IntComputer(object):
             pass
         else:
             for x in range(_pop := (4 - len(self._opcode) % 4)):
-                self._opcode.append(0)
+                self._opcode.append(None)
             self._length += 1
             self._pop = _pop
