@@ -1,4 +1,4 @@
-# --- Day 1: The Tyranny of the Rocket Equation ---
+# --- Day 1: Part 1: The Tyranny of the Rocket Equation ---
 #
 # Santa has become stranded at the edge of the Solar System while delivering presents to other planets! To accurately
 # calculate his position in space, safely align his warp drive, and return to Earth in time to save Christmas, he needs
@@ -22,20 +22,16 @@
 # a mass of 100756, the fuel required is 33583. The Fuel Counter-Upper needs to know the total fuel requirement. To
 # find it, individually calculate the fuel needed for the mass of each module (your puzzle input), then add together
 # all the fuel values.
-#
-# What is the sum of the fuel requirements for all of the modules on your spacecraft?
-# Answer: 3278434
 from fuel_funcs import fuel_calc, fuel_counter_upper
 
 
 def main(file: str):
-    assert fuel_calc('12') == 2
-    assert fuel_calc('14') == 2
-    assert fuel_calc('1969') == 654
-    assert fuel_calc('100756') == 33583
+    assert fuel_calc(12) == 2
+    assert fuel_calc(14) == 2
+    assert fuel_calc(1969) == 654
+    assert fuel_calc(100756) == 33583
 
-    fuel_req = fuel_counter_upper(file)
-    print(fuel_req)
+    print(fuel_counter_upper(file))
 
 
 if __name__ == '__main__':
