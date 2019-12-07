@@ -26,6 +26,7 @@ class Wire(object):
         distance = abs(self._central_port['x'] + value['x']) + abs(self._central_port['y'] + value['y'])
         return distance
 
+    # This function is way too big and needs refactoring
     def get_intersections(self, comparison_list: list) -> list:
         intersections = []
         list_len = len(comparison_list)
@@ -108,7 +109,6 @@ class Wire(object):
         # print(self._steps)
 
     def _reset(self):
-        self._central_port = {'x': 0, 'y': 0}
         self._wire_end = {'x': 0, 'y': 0}
         self._wire_coords = []
         self._list_position = 0
