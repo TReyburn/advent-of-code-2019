@@ -26,6 +26,22 @@ class Wire(object):
         distance = abs(self._central_port['x'] + value['x']) + abs(self._central_port['y'] + value['y'])
         return distance
 
+    def coord_test(self):
+        return self._get_coords(self._wire_coords, 0)
+
+    def v2_get_intersections(self, comparison_list: list) -> list:
+        intersections = []
+        self._steps = 0
+        for value in range(self._length - 1):
+            _1xfrom, _1xto, _1yfrom, _1yto = self._get_coords(self._wire_coords, value)
+            if _1xfrom == _1xto:
+                self._steps += abs(_1yfrom - _1yto)
+                self._check_intersections(_1xto, _1yfrom, _1yto, comparison_list, intersections, side='x')
+            elif _1yfrom == _1yto:
+                self._steps += abs(_1xfrom - _1xto)
+                self._check_intersections(_1yto, _1xfrom, _1xto, comparison_list, intersections, side='y')
+        return intersections
+
     # This function is way too big and needs refactoring
     def get_intersections(self, comparison_list: list) -> list:
         intersections = []
@@ -53,8 +69,6 @@ class Wire(object):
                                         foreign_step -= abs(wire2_yto - max(wire1_yto, wire1_yfrom))
                                         self._steps -= abs(wire2_yto - max(wire1_yto, wire1_yfrom))
                                         intersections.append(dict({'x': xval, 'y': wire2_yto, 'step': int(self._steps), 'f_step': int(foreign_step)}))
-                                        # foreign_step = 0
-                                        # self._steps = 0
                 elif wire1_yfrom == wire1_yto:
                     self._steps += abs(wire1_xfrom - wire1_xto)
                     for val2 in range(len(comparison_list) + 1):
@@ -118,6 +132,43 @@ class Wire(object):
     @staticmethod
     def reversible_range(x: int, y: int) -> range:
         return range(min(x, y), max(x + 1, y + 1))
+
+    #counting the steps is still messed up here
+    def _check_intersections(self, coord_val: int, _from: int, _to: int, _list: list, return_list: list, side=None):
+        foreign_step = 0
+        for value in range(len(_list)):
+            if len(_list) > value + 1:
+                _xfrom, _xto, _yfrom, _yto = self._get_coords(_list, value)
+                if side == 'x':
+                    if _yfrom == _yto:
+                        foreign_step += abs(_xfrom - _xto)
+                        for x_val in self.reversible_range(_xfrom, _xto):
+                            if x_val == coord_val and _yto in self.reversible_range(_to, _from):
+                                return_list.append(dict(
+                                    {'x': x_val, 'y': _yto, 'step': int(self._steps + abs(_yto - _from)),
+                                     'f_step': int(foreign_step + abs(_yto - _from))}))
+                    else:
+                        foreign_step += abs(_yfrom + _yto)
+                elif side == 'y':
+                    if _xfrom == _xto:
+                        foreign_step += abs(_yfrom - _yto)
+                        for y_val in self.reversible_range(_yfrom, _yto):
+                            if y_val == coord_val and _xto in self.reversible_range(_to, _from):
+                                return_list.append(dict(
+                                    {'x': y_val, 'y': _xto, 'step': int(self._steps + abs(_xto - _from)),
+                                     'f_step': int(foreign_step + abs(_xto - _from))}))
+                    else:
+                        foreign_step += abs(_xfrom + _xto)
+        return return_list
+
+    @staticmethod
+    def _get_coords(_list: list, value: int):
+        if len(_list) > value + 1:
+            _xfrom = _list[value]['x']
+            _xto = _list[value + 1]['x']
+            _yfrom = _list[value]['y']
+            _yto = _list[value + 1]['y']
+            return _xfrom, _xto, _yfrom, _yto
 
     # def steps_to_point(self, point: dict) -> int:
     #     self._reset()
