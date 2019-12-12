@@ -21,7 +21,7 @@ wire1 = Wire(['R8', 'U5', 'L5', 'D3'])
 wire2 = Wire(['U7', 'R6', 'D4', 'L4'])
 coords1 = wire1.travel()
 coords2 = wire2.travel()
-intersection_cords1 = wire1.v2_get_intersections(coords2)
-assert min(wire1.manhattan_distance(value) for value in intersection_cords1) == 6
+intersection_cords1 = wire1.get_intersections(coords2)
+assert min(wire1.manhattan_distance(value) for value in intersection_cords1[1:]) == 6
 
 print(intersection_cords1)
