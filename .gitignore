@@ -107,4 +107,4 @@ venv.bak/
 .idea
 
 # Test files
-/__test__
+/__test__.py
